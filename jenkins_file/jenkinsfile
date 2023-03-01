@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo "============ Select dockerfile from GitHub ============"
                 dir('docker_file') {
-                        imageBuild(CONTAINER_NAME, CONTAINER_TAG)
+                       sh 'docker build -t image_apache .'
                 }
 		    }
 	    } 
