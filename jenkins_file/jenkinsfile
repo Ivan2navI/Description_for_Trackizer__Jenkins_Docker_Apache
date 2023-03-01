@@ -1,6 +1,16 @@
 def CONTAINER_NAME="docker_apache"
 def CONTAINER_TAG="v1"
 
+def buildVersionString() {
+    return '1.0_' + env.BUILD_NUMBER
+}
+
+
+def imageRemove(containerName){
+    sh "docker stop $containerName"
+    sh "docker rm $containerName"
+    sh "docker rmi $containerName"
+}
 
 def imageBuild(containerName, tag){
     sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
@@ -12,17 +22,28 @@ def runApp(containerName, tag){
     echo "Application started"
 }
 
+
+
 pipeline {
     agent any
 
     stages {
+        stage("Image Remove"){
+            steps {
+                echo "============          Remove Previous      ============"
+                echo "============    Docker Container / Image   ============"
+                imageRemove(CONTAINER_NAME)
+            }
+        }
        	stage('Image Build'){
             steps {
                 echo "============ Select dockerfile from GitHub ============"
+                echo "============        & Build Image          ============"
                 dir('docker_file') {
                     imageBuild(CONTAINER_NAME, CONTAINER_TAG)
                 }
 		    }
 	    } 
+
     }
 }
