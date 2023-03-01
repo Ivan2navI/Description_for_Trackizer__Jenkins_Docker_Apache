@@ -8,8 +8,13 @@ def buildVersionString() {
 
 def imageRemove(containerName){
     try {
+        echo "docker stop $containerName"
         sh "docker stop $containerName"
+        
+        echo "docker rm $containerName"
         sh "docker rm $containerName"
+
+        echo "docker rmi $containerName"
         sh "docker rmi $containerName"
     } catch(error){}
 }
