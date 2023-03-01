@@ -1,0 +1,28 @@
+def CONTAINER_NAME="docker_apache"
+def CONTAINER_TAG="v1"
+
+
+def imageBuild(containerName, tag){
+    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    echo "Image build complete"
+}
+
+def runApp(containerName, tag){
+    sh "docker run -d --rm -p 80:80 --name $containerName $containerName:$tag"
+    echo "Application started"
+}
+
+pipeline {
+    agent any
+
+    stages {
+       	stage('Image Build'){
+            steps {
+                echo "============ Select dockerfile from GitHub ============"
+                dir('docker_file') {
+                        imageBuild(CONTAINER_NAME, CONTAINER_TAG)
+                }
+		    }
+	    } 
+    }
+}
