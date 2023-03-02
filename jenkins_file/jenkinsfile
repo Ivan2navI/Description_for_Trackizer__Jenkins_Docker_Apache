@@ -1,8 +1,7 @@
 def CONTAINER_NAME="docker_apache"
-def CONTAINER_TAG="v0.$BUILD_NUMBER"
+def CONTAINER_TAG="v0.${currentBuild.number}"
 
-BUILD_NUMBER_PREVIUOS=($BUILD_NUMBER)-1
-def CONTAINER_TAG_PREVIOUS="v0.$BUILD_NUMBER_PREVIUOS"
+def CONTAINER_TAG_PREVIOUS="v0.${currentBuild.previousBuild.getNumber()}"
 
 def containerStop(containerName){
     try {
