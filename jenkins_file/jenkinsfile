@@ -19,11 +19,11 @@ def containerRemove(containerName){
 
 def imageRemove(containerName, tag_previous){
     try {
-        echo "docker system prune -a -f"
-        sh "docker system prune -a -f"
-        
         echo "docker rmi $containerName:$tag_previous"
         sh "docker rmi $containerName:$tag_previous"
+
+        echo "docker system prune -a -f"
+        sh "docker system prune -a -f"
     } catch(error){}
 }
 
