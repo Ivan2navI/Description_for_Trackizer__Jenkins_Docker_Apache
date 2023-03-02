@@ -6,18 +6,29 @@ def buildVersionString() {
 }
 
 
-def imageRemove(containerName){
+def containerStop(containerName){
     try {
         echo "docker stop $containerName"
         sh "docker stop $containerName"
-        
+    } catch(error){}
+}
+
+
+def containerRemove(containerName){
+    try {
         echo "docker rm $containerName"
         sh "docker rm $containerName"
+    } catch(error){}
+}
 
+
+def imageRemove(containerName){
+    try {
         echo "docker rmi $containerName"
         sh "docker rmi $containerName"
     } catch(error){}
 }
+
 
 def imageBuild(containerName, tag){
     sh "docker build -t $containerName:$tag --pull --no-cache ."
@@ -35,13 +46,16 @@ pipeline {
     agent any
 
     stages {
-        stage("Image Remove"){
+        stage("Docker Container/Image Remove"){
             steps {
                 echo "============          Remove Previous      ============"
                 echo "============    Docker Container / Image   ============"
+                containerStop(CONTAINER_NAME)
+                containerRemove(CONTAINER_NAME)
                 imageRemove(CONTAINER_NAME)
             }
         }
+
        	stage('Image Build'){
             steps {
                 echo "============ Select dockerfile from GitHub ============"
