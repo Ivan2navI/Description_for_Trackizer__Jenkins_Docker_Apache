@@ -34,7 +34,7 @@ def imageBuild(containerName, tag){
 
 def runApacheWeb(containerName, tag){
     //sh "docker run -d --rm -p 80:80 --name $containerName $containerName:$tag"
-    sh "docker run -tid -p 80:80 --name $containerName $containerName:$tag"
+    sh "docker run -tid -p 80:80 --name $containerName $containerName:$tag -v ./:/var/www/html image_apache"
     echo "Application started"
 }
 
