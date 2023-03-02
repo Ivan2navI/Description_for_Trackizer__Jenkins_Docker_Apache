@@ -22,9 +22,8 @@ def imageRemove(containerName, tag_previous){
         echo "docker image prune -f"
         sh "docker image prune -f"
         
-
-        echo "docker rmi $containerName:$tag"
-        sh "docker rmi $containerName:$tag"
+        echo "docker rmi $containerName:$tag_previous"
+        sh "docker rmi $containerName:$tag_previous"
     } catch(error){}
 }
 
