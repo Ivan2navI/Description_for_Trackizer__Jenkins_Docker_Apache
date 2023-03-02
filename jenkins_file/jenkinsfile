@@ -57,6 +57,7 @@ pipeline {
             steps {
                 echo "============ Select dockerfile from GitHub ============"
                 echo "============        & Build Image          ============"
+                // GitHub, chahge directory to 'docker_file'
                 dir('docker_file') {
                     imageBuild(CONTAINER_NAME, CONTAINER_TAG)
                 }
@@ -67,6 +68,7 @@ pipeline {
             steps {
                 echo "============ Select Web Apache from GitHub ============"
                 echo "============ Run Container & Copy Webfiles ============"
+                // GitHub, chahge directory to 'apache_web_for_docker'
                 dir('apache_web_for_docker') {
                     runApacheWeb(CONTAINER_NAME, CONTAINER_TAG)
                 }
