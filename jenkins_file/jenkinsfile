@@ -22,10 +22,10 @@ def containerRemove(containerName){
 }
 
 
-def imageRemove(containerName){
+def imageRemove(containerName, tag){
     try {
         echo "docker rmi $containerName"
-        sh "docker rmi $containerName"
+        sh "docker rmi $containerName:$tag"
     } catch(error){}
 }
 
@@ -52,7 +52,7 @@ pipeline {
                 echo "============    Docker Container / Image   ============"
                 containerStop(CONTAINER_NAME)
                 containerRemove(CONTAINER_NAME)
-                imageRemove(CONTAINER_NAME)
+                imageRemove(CONTAINER_NAME, CONTAINER_TAG)
             }
         }
 
