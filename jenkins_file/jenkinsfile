@@ -24,7 +24,10 @@ def containerRemove(containerName){
 
 def imageRemove(containerName, tag){
     try {
-        echo "docker rmi $containerName"
+        echo "docker image prune -f"
+        sh "docker image prune -f"
+        
+        echo "docker rmi $containerName:$tag"
         sh "docker rmi $containerName:$tag"
     } catch(error){}
 }
