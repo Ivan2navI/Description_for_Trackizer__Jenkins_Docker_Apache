@@ -1,6 +1,9 @@
 def CONTAINER_NAME="docker_apache"
 def CONTAINER_TAG="v0.$BUILD_NUMBER"
 
+BUILD_NUMBER_PREVIUOS=($BUILD_NUMBER)-1
+def CONTAINER_TAG_PREVIOUS="v0.$BUILD_NUMBER_PREVIUOS"
+
 def containerStop(containerName){
     try {
         echo "docker stop $containerName"
@@ -15,13 +18,14 @@ def containerRemove(containerName){
     } catch(error){}
 }
 
-def imageRemove(containerName){
+def imageRemove(containerName, tag_previous){
     try {
         echo "docker image prune -f"
         sh "docker image prune -f"
         
-        echo "docker rmi $containerName"
-        sh "docker rmi $containerName"
+
+        echo "docker rmi $containerName:$tag"
+        sh "docker rmi $containerName:$tag"
     } catch(error){}
 }
 
@@ -46,7 +50,7 @@ pipeline {
                 echo "============    Docker Container / Image   ============"
                 containerStop(CONTAINER_NAME)
                 containerRemove(CONTAINER_NAME)
-                imageRemove(CONTAINER_NAME)
+                imageRemove(CONTAINER_NAME, CONTAINER_TAG_PREVIOUS)
             }
         }
 
