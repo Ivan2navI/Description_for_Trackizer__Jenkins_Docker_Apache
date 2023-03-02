@@ -1,18 +1,12 @@
 def CONTAINER_NAME="docker_apache"
 def CONTAINER_TAG="v0.$BUILD_NUMBER"
 
-def buildVersionString() {
-    return '1.0_' + env.BUILD_NUMBER
-}
-
-
 def containerStop(containerName){
     try {
         echo "docker stop $containerName"
         sh "docker stop $containerName"
     } catch(error){}
 }
-
 
 def containerRemove(containerName){
     try {
@@ -21,17 +15,15 @@ def containerRemove(containerName){
     } catch(error){}
 }
 
-
-def imageRemove(containerName, tag){
+def imageRemove(containerName){
     try {
         echo "docker image prune -f"
         sh "docker image prune -f"
         
-        echo "docker rmi $containerName:$tag"
-        sh "docker rmi $containerName:$tag"
+        echo "docker rmi $containerName"
+        sh "docker rmi $containerName"
     } catch(error){}
 }
-
 
 def imageBuild(containerName, tag){
     sh "docker build -t $containerName:$tag --pull --no-cache ."
@@ -44,7 +36,6 @@ def runApp(containerName, tag){
 }
 
 
-
 pipeline {
     agent any
 
@@ -55,7 +46,7 @@ pipeline {
                 echo "============    Docker Container / Image   ============"
                 containerStop(CONTAINER_NAME)
                 containerRemove(CONTAINER_NAME)
-                imageRemove(CONTAINER_NAME, CONTAINER_TAG)
+                imageRemove(CONTAINER_NAME)
             }
         }
 
